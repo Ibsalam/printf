@@ -6,7 +6,6 @@ int print_un_oct(va_list args)
 	int check;
 	int len;
 	unsigned int num;
-	int a;
 
 	n = va_arg(args, int);
 	check = 1;
