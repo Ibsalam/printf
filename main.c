@@ -23,6 +23,7 @@ int main(void)
     _printf("Negative:[%d]\n", -762534);
     printf("Negative:[%d]\n", -762534);
     _printf("Unsigned:[%u]\n", ui);
+    _printf("testing for b:[%b]\n", 98);
     printf("Unsigned:[%u]\n", ui);
     _printf("Unsigned octal:[%o]\n", ui);
     printf("Unsigned octal:[%o]\n", ui);
