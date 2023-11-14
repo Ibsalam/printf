@@ -16,6 +16,8 @@ int my_putchar (char c);
 int _printf(const char *format, ...);
 void _vprint(const char *format, va_list args);
 int parser (const char *format, conver_t funct_list[], va_list args);
+int p_unsigned_integer(va_list args);
+int print_un_number(va_list args);
 int p_char (va_list);
 int p_string (va_list args);
 int p_percent (va_list);
