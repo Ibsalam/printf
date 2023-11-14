@@ -6,7 +6,6 @@ int print_hexadecimal(va_list args)
 	int check;
 	int len;
 	unsigned int num;
-	int len2;
 
 	n = va_arg(args, int);
 	check = 1;
@@ -22,7 +21,7 @@ int print_hexadecimal(va_list args)
 		check = check / 16;
 	}
 	
-		return ('s');
+		return (len);
 }
 int p_hexadecimal(va_list args)
 {
