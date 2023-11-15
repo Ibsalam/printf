@@ -19,7 +19,7 @@ int _printf(const char *format, ...)
 		{"o", p_unsigned_oct},
 		{"x", p_hexadecimal},
 		{"X", p_hexadecimal},
-		{"b", p_unsigned_bin},
+		{"b", print_binary},
 		{NULL, NULL}
 	};
 

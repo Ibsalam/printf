@@ -28,7 +28,5 @@ int p_percent (va_list);
 int print_unsigned_number (unsigned int n);
 int print_number (va_list);
 int p_integer (va_list);
-int print_un_bin(va_list args);
-int p_unsigned_bin(va_list args);
-
+int print_binary(va_list val);
 #endif
