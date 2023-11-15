@@ -28,9 +28,6 @@ int p_percent (va_list);
 int print_unsigned_number (unsigned int n);
 int print_number (va_list);
 int p_integer (va_list);
-int print_bnr(va_list arguments, char *buf, unsigned int ibuf);
-unsigned int handl_buf(char *buf, char c, unsigned int ibuf);
-char *fill_binary_array(char *binary, long int int_in, int isneg, int limit);
+int print_binary(va_list val __attribute__((unused)))
 
 #endif
-

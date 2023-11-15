@@ -1,42 +1,33 @@
 #include "main.h"
+#include <limits.h>
 
 /**
- * print_bnr - prints decimal in binary
- * @arguments: input string
- * @buf: buffer pointer
- * @ibuf: index for buffer pointer
- * Return: number of chars printed.
+ * print_binary - Prints the binary representation of an unsigned int.
+ * @val: A va_list containing the unsigned int to be converted.
+ *
+ * Return: The number of characters printed.
  */
-int print_bnr(va_list arguments, char *buf, unsigned int ibuf)
+int print_binary(va_list val __attribute__((unused)))
 {
-	int int_input, count, i, first_one, isnegative;
-	char *binary;
+	int has_set_bit = 0;
+	int count = 0;
+	unsigned int num = va_arg(val, unsigned int);
+	unsigned int bit_mask;
 
-	int_input = va_arg(arguments, int);
-	isnegative = 0;
-	if (int_input == 0)
+	for (int i = CHAR_BIT * sizeof(unsigned int) - 1; i >= 0; i--)
 	{
-		ibuf = handl_buf(buf, '0', ibuf);
-		return (1);
-	}
-	if (int_input < 0)
-	{
-		int_input = (int_input * -1) - 1;
-		isnegative = 1;
-	}
-	binary = malloc(sizeof(char) * (32 + 1));
-	binary = fill_binary_array(binary, int_input, isnegative, 32);
-	first_one = 0;
-	for (count = i = 0; binary[i]; i++)
-	{
-		if (first_one == 0 && binary[i] == '1')
-			first_one = 1;
-		if (first_one == 1)
+		bit_mask = 1u << i;
+		if (num & bit_mask)
 		{
-			ibuf = handl_buf(buf, binary[i], ibuf);
-			count++;
+			has_set_bit = 1;
+			_putchar('1');
 		}
+		else if (has_set_bit || i == 0)
+		{
+			_putchar('0');
+		}
+		count++;
 	}
-	free(binary);
+
 	return (count);
 }
