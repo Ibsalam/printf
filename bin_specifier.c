@@ -1,33 +1,35 @@
 #include "main.h"
-#include <limits.h>
 
 /**
- * print_binary - Prints the binary representation of an unsigned int.
+ * print_binary - Converts an unsigned int to binary and prints it.
  * @val: A va_list containing the unsigned int to be converted.
  *
  * Return: The number of characters printed.
  */
-int print_binary(va_list val __attribute__((unused)))
+int print_binary(va_list val)
 {
-	int has_set_bit = 0;
-	int count = 0;
+	int flag = 0;
+	int cont = 0;
+	int i, a = 1, b;
 	unsigned int num = va_arg(val, unsigned int);
-	unsigned int bit_mask;
+	unsigned int p;
 
-	for (int i = CHAR_BIT * sizeof(unsigned int) - 1; i >= 0; i--)
+	for (i = 0; i < 32; i++)
 	{
-		bit_mask = 1u << i;
-		if (num & bit_mask)
+		p = ((a << (31 - i)) & num);
+		if (p >> (31 - i))
+			flag = 1;
+		if (flag)
 		{
-			has_set_bit = 1;
-			_putchar('1');
+			b = p >> (31 - i);
+			my_putchar(b + '0');
+			cont++;
 		}
-		else if (has_set_bit || i == 0)
-		{
-			_putchar('0');
-		}
-		count++;
 	}
-
-	return (count);
+	if (cont == 0)
+	{
+		cont++;
+		my_putchar('0');
+	}
+	return (cont);
 }
