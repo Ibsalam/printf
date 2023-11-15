@@ -5,6 +5,8 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+#define BUFFER_SIZE 1024
+
 struct convert
 {
 	char *sym;
@@ -29,4 +31,5 @@ int print_unsigned_number (unsigned int n);
 int print_number (va_list);
 int p_integer (va_list);
 int print_binary(va_list val);
+
 #endif

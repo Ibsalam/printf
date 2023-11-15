@@ -1,5 +1,8 @@
 #include "main.h"
 #include <stdint.h>
+#include <unistd.h>
+
+#define BUFFER_SIZE 1024
 
 /**
  * _printf - print integer
@@ -8,29 +11,70 @@
  */
 int _printf(const char *format, ...)
 {
-	int printed_chars;
-	conver_t funct_list[] = {
-		{"c", p_char},
-		{"s", p_string},
-		{"%", p_percent},
-		{"d", p_integer},
-		{"i", p_integer},
-		{"u", p_unsigned_integer},
-		{"o", p_unsigned_oct},
-		{"x", p_hexadecimal},
-		{"X", p_hexadecimal},
-		{"b", print_binary},
-		{NULL, NULL}
-	};
-
 	va_list args;
+	int count = 0;
+	int buffer_index = 0;
+	const char *str;
+	char buffer[BUFFER_SIZE];
 
-	if (format == NULL)
-		return (-1);
 	va_start(args, format);
 
-	printed_chars = parser(format, funct_list, args);
+	while (*format)
+{
+	if (*format == '%')
+{
+		format++;
+		switch (*format)
+{
+		case 'c':
+		buffer[buffer_index++] = (char) va_arg(args, int);
+			count++;
+			break;
+
+		case 's':
+		str = va_arg(args, const char *);
+		while (*str)
+{
+		buffer[buffer_index++] = *str++;
+			count++;
+		if (buffer_index == BUFFER_SIZE - 1)
+{
+		buffer[buffer_index] = '\0';
+		write(1, buffer, buffer_index);
+		buffer_index = 0;
+}
+}
+			break;
+
+		case '%':
+		buffer[buffer_index++] = '%';
+			count++;
+			break;
+
+		default:
+		buffer[buffer_index++] = '%';
+			count++;
+			break;
+}
+}else{
+		buffer[buffer_index++] = *format;
+		count++;
+}
+
+		if (buffer_index == BUFFER_SIZE - 1)
+{
+		buffer[buffer_index] = '\0';
+		write(1, buffer, buffer_index);
+		buffer_index = 0;
+}
+
+		format++;
+}
+
+	buffer[buffer_index] = '\0';
+	write(1, buffer, buffer_index);
+
 	va_end(args);
 
-	return (printed_chars);
+	return (count);
 }
