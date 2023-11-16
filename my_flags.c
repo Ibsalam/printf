@@ -1,35 +1,37 @@
 #include "main.h"
 
 /**
- * get_flags - Calculates active flags
- * @format: Formatted string in which to print the arguments
- * @i: take a parameter.
- * Return: Flags:
+ * get_active_flags - Calculates active flags for printf-style formatting.
+ * @format: Formatted string containing the format specifier.
+ * @index: Pointer to the current position in the format string.
+ *
+ * Return: Integer representing the active flags (bitwise OR of flags).
  */
-int get_flags(const char *format, int *i)
+int get_active_flags(const char *format, int *index)
 {
-	/* - + 0 # ' ' */
-	/* 1 2 4 8  16 */
-	int j, curr_i;
-	int flags = 0;
-	const char FLAGS_CH[] = {'-', '+', '0', '#', ' ', '\0'};
-	const int FLAGS_ARR[] = {F_MINUS, F_PLUS, F_ZERO, F_HASH, F_SPACE, 0};
+	int j, current_index;
+	int active_flags = 0;
+	const char FLAGS_CHARACTERS[] = {'-', '+', '0', '#', ' ', '\0'};
+	const int FLAGS_ARRAY[] = {F_MINUS, F_PLUS, F_ZERO, F_HASH, F_SPACE, 0};
 
-	for (curr_i = *i + 1; format[curr_i] != '\0'; curr_i++)
+	for (current_index = *index + 1; format[current_index] != '\0'; current_index++)
 	{
-		for (j = 0; FLAGS_CH[j] != '\0'; j++)
-			if (format[curr_i] == FLAGS_CH[j])
-			{
-				flags |= FLAGS_ARR[j];
-				break;
-			}
-
-		if (FLAGS_CH[j] == 0)
-			break;
+	for (j = 0; FLAGS_CHARACTERS[j] != '\0'; j++)
+	{
+		if (format[current_index] == FLAGS_CHARACTERS[j])
+	{
+		active_flags |= FLAGS_ARRAY[j];
+		break;
+	}
 	}
 
-	*i = curr_i - 1;
+	if (FLAGS_CHARACTERS[j] == 0)
+	{
+		break;
+	}
+	}
 
-	return (flags);
+	*index = current_index - 1;
+
+	return (active_flags);
 }
-

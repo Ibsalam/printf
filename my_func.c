@@ -1,40 +1,39 @@
 #include "main.h"
 
-/************************* PRINT CHAR *************************/
-
 /**
- * p_char - Prints a char
- * @types: List a of arguments
+ * specifier_char - Prints a char
+ * @args: List of arguments
  * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
+ * @flags: Calculates active flags
  * @width: Width
  * @precision: Precision specification
  * @size: Size specifier
  * Return: Number of chars printed
  */
-int p_char(va_list types, char buffer[],
+int specifier_char(va_list args, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	char c = va_arg(types, int);
+	char character = va_arg(args, int);
 
-	return (handle_write_char(c, buffer, flags, width, precision, size));
+	return (handle_write_char(character, buffer, flags, width, precision, size));
 }
-/************************* PRINT A STRING *************************/
+
+
 /**
- * p_string - Prints a string
- * @types: List a of arguments
+ * specifier_string - Prints a string
+ * @args: List of arguments
  * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
+ * @flags: Calculates active flags
+ * @width: Width
  * @precision: Precision specification
  * @size: Size specifier
  * Return: Number of chars printed
  */
-int p_string(va_list types, char buffer[],
+int specifier_string(va_list args, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	int length = 0, i;
-	char *str = va_arg(types, char *);
+	char *str = va_arg(args, char *);
 
 	UNUSED(buffer);
 	UNUSED(flags);
@@ -74,21 +73,23 @@ int p_string(va_list types, char buffer[],
 
 	return (write(1, str, length));
 }
-/************************* PRINT PERCENT SIGN *************************/
+
+/************************* SPECIFIER PERCENT SIGN *************************/
+
 /**
- * p_percent - Prints a percent sign
- * @types: Lista of arguments
+ * specifier_percent - Prints a percent sign
+ * @args: List of arguments
  * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
+ * @flags: Calculates active flags
+ * @width: Width
  * @precision: Precision specification
  * @size: Size specifier
  * Return: Number of chars printed
  */
-int p_percent(va_list types, char buffer[],
+int specifier_percent(va_list args, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	UNUSED(types);
+	UNUSED(args);
 	UNUSED(buffer);
 	UNUSED(flags);
 	UNUSED(width);
@@ -97,36 +98,37 @@ int p_percent(va_list types, char buffer[],
 	return (write(1, "%%", 1));
 }
 
-/************************* PRINT INT *************************/
+/************************* SPECIFIER INTEGER *************************/
+
 /**
- * p_int - Print int
- * @types: Lista of arguments
+ * specifier_integer - Print integer
+ * @args: List of arguments
  * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
+ * @flags: Calculates active flags
+ * @width: Width
  * @precision: Precision specification
  * @size: Size specifier
  * Return: Number of chars printed
  */
-int p_int(va_list types, char buffer[],
+int specifier_integer(va_list args, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	int i = BUFF_SIZE - 2;
 	int is_negative = 0;
-	long int n = va_arg(types, long int);
+	long int number = va_arg(args, long int);
 	unsigned long int num;
 
-	n = convert_size_number(n, size);
+	number = convert_size_number(number, size);
 
-	if (n == 0)
+	if (number == 0)
 		buffer[i--] = '0';
 
 	buffer[BUFF_SIZE - 1] = '\0';
-	num = (unsigned long int)n;
+	num = (unsigned long int)number;
 
-	if (n < 0)
+	if (number < 0)
 	{
-		num = (unsigned long int)((-1) * n);
+		num = (unsigned long int)((-1) * number);
 		is_negative = 1;
 	}
 
@@ -141,22 +143,23 @@ int p_int(va_list types, char buffer[],
 	return (write_number(is_negative, i, buffer, flags, width, precision, size));
 }
 
-/************************* PRINT BINARY *************************/
+/************************* SPECIFIER BINARY *************************/
+
 /**
- * p_binary - Prints an unsigned number
- * @types: Lista of arguments
+ * specifier_binary - Prints an unsigned number in binary
+ * @args: List of arguments
  * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
+ * @flags: Calculates active flags
+ * @width: Width
  * @precision: Precision specification
  * @size: Size specifier
- * Return: Numbers of char printed.
+ * Return: Number of chars printed
  */
-int p_binary(va_list types, char buffer[],
+int specifier_binary(va_list args, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	unsigned int n, m, i, sum;
-	unsigned int a[32];
+	unsigned int binary_array[32];
 	int count;
 
 	UNUSED(buffer);
@@ -165,22 +168,22 @@ int p_binary(va_list types, char buffer[],
 	UNUSED(precision);
 	UNUSED(size);
 
-	n = va_arg(types, unsigned int);
+	n = va_arg(args, unsigned int);
 	m = 2147483648; /* (2 ^ 31) */
-	a[0] = n / m;
+	binary_array[0] = n / m;
 	for (i = 1; i < 32; i++)
 	{
 		m /= 2;
-		a[i] = (n / m) % 2;
+		binary_array[i] = (n / m) % 2;
 	}
 	for (i = 0, sum = 0, count = 0; i < 32; i++)
 	{
-		sum += a[i];
+		sum += binary_array[i];
 		if (sum || i == 31)
 		{
-			char z = '0' + a[i];
+			char binary_char = '0' + binary_array[i];
 
-			write(1, &z, 1);
+			write(1, &binary_char, 1);
 			count++;
 		}
 	}
