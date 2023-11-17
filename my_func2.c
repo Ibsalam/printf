@@ -1,24 +1,24 @@
 #include "main.h"
 
+/****************** PRINT POINTER ******************/
 /**
- * specifier_pointer - Prints the value of a pointer variable
- * @args: List of arguments
+ * p_pointer - Prints the value of a pointer variable
+ * @types: List a of arguments
  * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width specifier
- * @precision: Precision specifier
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
  * @size: Size specifier
- *
- * Return: Number of characters printed.
+ * Return: Number of chars printed.
  */
-int specifier_pointer(va_list args, char buffer[],
-			int flags, int width, int precision, int size)
+int p_pointer(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
 	char extra_c = 0, padd = ' ';
 	int ind = BUFF_SIZE - 2, length = 2, padd_start = 1; /* length=2, for '0x' */
 	unsigned long num_addrs;
 	char map_to[] = "0123456789abcdef";
-	void *addrs = va_arg(args, void *);
+	void *addrs = va_arg(types, void *);
 
 	UNUSED(width);
 	UNUSED(size);
@@ -47,26 +47,27 @@ int specifier_pointer(va_list args, char buffer[],
 
 	ind++;
 
+	/*return (write(1, &buffer[i], BUFF_SIZE - i - 1));*/
 	return (write_pointer(buffer, ind, length,
-			width, flags, padd, extra_c, padd_start));
+		width, flags, padd, extra_c, padd_start));
 }
 
+/************************* PRINT NON PRINTABLE *************************/
 /**
- * specifier_non_printable - Prints ASCII codes in hexa of non-printable chars
- * @args: List of arguments
+ * p_non_printable - Prints ascii codes in hexa of non printable chars
+ * @types: Lista of arguments
  * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width specifier
- * @precision: Precision specifier
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
  * @size: Size specifier
- *
- * Return: Number of characters printed
+ * Return: Number of chars printed
  */
-int specifier_non_printable(va_list args, char buffer[],
-		int flags, int width, int precision, int size)
+int p_non_printable(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
 	int i = 0, offset = 0;
-	char *str = va_arg(args, char *);
+	char *str = va_arg(types, char *);
 
 	UNUSED(flags);
 	UNUSED(width);
@@ -79,7 +80,7 @@ int specifier_non_printable(va_list args, char buffer[],
 	while (str[i] != '\0')
 	{
 		if (is_printable(str[i]))
-		buffer[i + offset] = str[i];
+			buffer[i + offset] = str[i];
 		else
 			offset += append_hexa_code(str[i], buffer, i + offset);
 
@@ -91,19 +92,20 @@ int specifier_non_printable(va_list args, char buffer[],
 	return (write(1, buffer, i + offset));
 }
 
+/************************* PRINT REVERSE *************************/
 /**
- * specifier_reverse - Prints reverse string.
- * @args: List of arguments
+ * p_reverse - Prints reverse string.
+ * @types: Lista of arguments
  * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width specifier
- * @precision: Precision specifier
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
  * @size: Size specifier
- *
- * Return: Number of characters printed
+ * Return: Numbers of chars printed
  */
-int specifier_reverse(va_list args, char buffer[],
-			int flags, int width, int precision, int size)
+
+int p_reverse(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
 	char *str;
 	int i, count = 0;
@@ -113,11 +115,12 @@ int specifier_reverse(va_list args, char buffer[],
 	UNUSED(width);
 	UNUSED(size);
 
-	str = va_arg(args, char *);
+	str = va_arg(types, char *);
 
 	if (str == NULL)
 	{
 		UNUSED(precision);
+
 		str = ")Null(";
 	}
 	for (i = 0; str[i]; i++)
@@ -132,20 +135,19 @@ int specifier_reverse(va_list args, char buffer[],
 	}
 	return (count);
 }
-
+/************************* PRINT A STRING IN ROT13 *************************/
 /**
- * specifier_rot13string - Print a string in ROT13.
- * @args: List of arguments
+ * p_rot13string - Print a string in rot13.
+ * @types: Lista of arguments
  * @buffer: Buffer array to handle print
- * @flags: Calculates active flags
- * @width: Width specifier
- * @precision: Precision specifier
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
  * @size: Size specifier
- *
- * Return: Number of characters printed
+ * Return: Numbers of chars printed
  */
-int specifier_rot13string(va_list args, char buffer[],
-			int flags, int width, int precision, int size)
+int p_rot13string(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
 	char x;
 	char *str;
@@ -154,7 +156,7 @@ int specifier_rot13string(va_list args, char buffer[],
 	char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	str = va_arg(args, char *);
+	str = va_arg(types, char *);
 	UNUSED(buffer);
 	UNUSED(flags);
 	UNUSED(width);

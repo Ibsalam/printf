@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * isPrintable - Checks if a character is printable
- * @c: The character to be evaluated.
+ * is_printable - Evaluates if a char is printable
+ * @c: Char to be evaluated.
  *
- * Return: 1 if c is printable, 0 otherwise.
+ * Return: 1 if c is printable, 0 otherwise
  */
-int isPrintable(char c)
+int is_printable(char c)
 {
 	if (c >= 32 && c < 127)
 		return (1);
@@ -15,36 +15,35 @@ int isPrintable(char c)
 }
 
 /**
- * appendHexaCode - Appends ASCII in hexadecimal code to the buffer
- * @buffer: Array of characters.
- * @index: Index at which to start appending.
- * @asciiCode: ASCII code to be appended.
- *
- * Return: Always 3.
+ * append_hexa_code - Append ascci in hexadecimal code to buffer
+ * @buffer: Array of chars.
+ * @i: Index at which to start appending.
+ * @ascii_code: ASSCI CODE.
+ * Return: Always 3
  */
-int appendHexaCode(char asciiCode, char buffer[], int index)
+int append_hexa_code(char ascii_code, char buffer[], int i)
 {
-	char hexMap[] = "0123456789ABCDEF";
+	char map_to[] = "0123456789ABCDEF";
+	/* The hexa format code is always 2 digits long */
+	if (ascii_code < 0)
+		ascii_code *= -1;
 
-	if (asciiCode < 0)
-		asciiCode *= -1;
+	buffer[i++] = '\\';
+	buffer[i++] = 'x';
 
-	buffer[index++] = '\\';
-	buffer[index++] = 'x';
-
-	buffer[index++] = hexMap[asciiCode / 16];
-	buffer[index] = hexMap[asciiCode % 16];
+	buffer[i++] = map_to[ascii_code / 16];
+	buffer[i] = map_to[ascii_code % 16];
 
 	return (3);
 }
 
 /**
- * isDigit - Checks if a character is a digit
- * @c: The character to be evaluated.
+ * is_digit - Verifies if a char is a digit
+ * @c: Char to be evaluated
  *
- * Return: 1 if c is a digit, 0 otherwise.
+ * Return: 1 if c is a digit, 0 otherwise
  */
-int isDigit(char c)
+int is_digit(char c)
 {
 	if (c >= '0' && c <= '9')
 		return (1);
@@ -53,30 +52,30 @@ int isDigit(char c)
 }
 
 /**
- * convertSizeNumber - Casts a number to the specified size
- * @num: Number to be cast.
- * @size: Type indicating the size to be casted.
+ * convert_size_number - Casts a number to the specified size
+ * @num: Number to be casted.
+ * @size: Number indicating the type to be casted.
  *
- * Return: Casted value of num.
+ * Return: Casted value of num
  */
-long int convertSizeNumber(long int num, int size)
+long int convert_size_number(long int num, int size)
 {
 	if (size == S_LONG)
-		return num;
+		return (num);
 	else if (size == S_SHORT)
-	return ((short)num);
+		return ((short)num);
 
 	return ((int)num);
 }
 
 /**
- * convertSizeUnsigned - Casts an unsigned number to the specified size
- * @num: Unsigned number to be cast.
- * @size: Type indicating the size to be casted.
+ * convert_size_unsgnd - Casts a number to the specified size
+ * @num: Number to be casted
+ * @size: Number indicating the type to be casted
  *
- * Return: Casted value of num.
+ * Return: Casted value of num
  */
-long int convertSizeUnsigned(unsigned long int num, int size)
+long int convert_size_unsgnd(unsigned long int num, int size)
 {
 	if (size == S_LONG)
 		return (num);

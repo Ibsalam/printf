@@ -1,72 +1,49 @@
 #include "main.h"
-
 /**
- * handle_print_specifier - Prints an argument based on its type
+ * handle_print - Prints an argument based on its type
  * @fmt: Formatted string in which to print the arguments.
- * @index: Pointer to the current index in the format string.
  * @list: List of arguments to be printed.
+ * @ind: ind.
  * @buffer: Buffer array to handle print.
- * @flags: Calculates active flags.
- * @width: Width specifier.
- * @precision: Precision specifier.
- * @size: Size specifier.
- * Return: (Number of characters printed) on success, -1 on error.
+ * @flags: Calculates active flags
+ * @width: get width.
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: 1 or 2;
  */
-int handle_print_specifier(const char *fmt, int *index, va_list list,
-			char buffer[], int flags, int width, int precision, int size)
+int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	int unknown_length = 0;
-	int printed_characters = -1;
-
-	specifier_t specifiers[] = {
-		{'c', specifier_char}, {'s', specifier_string}, {'%', specifier_percent},
-		{'i', specifier_int}, {'d', specifier_int}, {'b', specifier_binary},
-		{'u', specifier_unsigned}, {'o', specifier_octal}, {'x', specifier_hexadecimal},
-		{'X', specifier_hexa_upper}, {'p', specifier_pointer}, {'S', specifier_non_printable},
-		{'r', specifier_reverse}, {'R', specifier_rot13string}, {'\0', NULL}
+	int i, unknow_len = 0, printed_chars = -1;
+	fmt_t fmt_types[] = {
+		{'c', p_char}, {'s', p_string}, {'%', p_percent},
+		{'i', p_int}, {'d', p_int}, {'b', p_binary},
+		{'u', p_unsigned}, {'o', p_octal}, {'x', p_hexadecimal},
+		{'X', p_hexa_upper}, {'p', p_pointer}, {'S', p_non_printable},
+		{'r', p_reverse}, {'R', p_rot13string}, {'\0', NULL}
 	};
+	for (i = 0; fmt_types[i].fmt != '\0'; i++)
+		if (fmt[*ind] == fmt_types[i].fmt)
+			return (fmt_types[i].fn(list, buffer, flags, width, precision, size));
 
-	for (int i = 0; specifiers[i].specifier != '\0'; i++)
+	if (fmt_types[i].fmt == '\0')
 	{
-		if (fmt[*index] == specifiers[i].specifier)
-		{
-		return (specifiers[i].function(list, buffer, flags, width, precision, size));
-		}
-	}
-
-	if (specifiers[i].specifier == '\0')
-	{
-		if (fmt[*index] == '\0')
-		{
+		if (fmt[*ind] == '\0')
 			return (-1);
-		}
-
-		unknown_length += write(1, "%%", 1);
-
-		if (fmt[*index - 1] == ' ')
-		{
-			unknown_length += write(1, " ", 1);
-		}
+		unknow_len += write(1, "%%", 1);
+		if (fmt[*ind - 1] == ' ')
+			unknow_len += write(1, " ", 1);
 		else if (width)
 		{
-			--(*index);
-			while (fmt[*index] != ' ' && fmt[*index] != '%')
-			{
-				--(*index);
-			}
-
-			if (fmt[*index] == ' ')
-			{
-				--(*index);
-			}
-
+			--(*ind);
+			while (fmt[*ind] != ' ' && fmt[*ind] != '%')
+				--(*ind);
+			if (fmt[*ind] == ' ')
+				--(*ind);
 			return (1);
 		}
-
-		unknown_length += write(1, &fmt[*index], 1);
-
-		return (unknown_length);
+		unknow_len += write(1, &fmt[*ind], 1);
+		return (unknow_len);
 	}
-
-	return (printed_characters);
+	return (printed_chars);
 }
